@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>  Form</title>
+	<style>
+		body{font-family:Segoe UI,Arial,Helvetica,sans-serif;margin:20px;background:#f7f7f7}
+		main{max-width:680px;margin:0 auto;background:#fff;padding:20px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.08)}
+		label{display:block;margin-top:12px;font-weight:600}
+		input[type=text],input[type=email],input[type=password],textarea,select{width:100%;padding:8px;margin-top:6px;border:1px solid #ccc;border-radius:4px}
+		fieldset{margin-top:12px;border:1px solid #e6e6e6;padding:10px;border-radius:4px}
+		.row{display:flex;gap:12px}
+		.row > *{flex:1}
+		button{margin-top:16px;padding:10px 16px;border:0;background:#0066cc;color:#fff;border-radius:4px;cursor:pointer}
+		#result{margin-top:14px;color:green;font-weight:600}
+	</style>
+</head>
+<body>
+	<main>
+		<h1>Contact Form</h1>
+		<form id="contactForm" action="#" method="post" novalidate>
+			<label for="name">Full name</label>
+			<input id="name" name="name" type="text" required placeholder="Jane Doe">
+
+			<label for="email">Email</label>
+			<input id="email" name="email" type="email" required placeholder="you@example.com">
+
+			<div class="row">
+				<div>
+					<label for="password">Password</label>
+					<input id="password" name="password" type="password" minlength="6" required>
+				</div>
+				<div>
+					<label for="confirm">Confirm password</label>
+					<input id="confirm" name="confirm" type="password" required>
+				</div>
+			</div>
+
+			<fieldset>
+				<legend>Gender</legend>
+				<label><input type="radio" name="gender" value="female"> Female</label>
+				<label><input type="radio" name="gender" value="male"> Male</label>
+				<label><input type="radio" name="gender" value="other"> Other</label>
+			</fieldset>
+
+			<label for="message">Message</label>
+			<textarea id="message" name="message" rows="4" placeholder="Write a short message"></textarea>
+
+			<label style="margin-top:10px"><input id="terms" name="terms" type="checkbox" required> I agree to the terms</label>
+
+			<button type="submit">Submit</button>
+		</form>
+
+		<div id="result" aria-live="polite"></div>
+	</main>
+
+	<script>
+		const form = document.getElementById('contactForm');
+		const result = document.getElementById('result');
+		form.addEventListener('submit', function(e){
+			e.preventDefault();
+			if (!form.checkValidity()){
+				form.reportValidity();
+				return;
+			}
+			const pwd = form.password.value;
+			const conf = form.confirm.value;
+			if (pwd !== conf){
+				alert('Passwords do not match');
+				form.confirm.focus();
+				return;
+			}
+			const data = {
+				name: form.name.value.trim(),
+				email: form.email.value.trim(),
+				gender: form.gender.value || '',
+				message: form.message.value.trim()
+			};
+			result.textContent = 'Form submitted — ' + JSON.stringify(data);
+			form.reset();
+		});
+	</script>
+</body>
+</html>
+
